@@ -1,0 +1,30 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: jwtJava
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: ${DB_CLASSNAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    database-platform: ${DB_PLATFORM}
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org:
+    hibernate:
+      SQL: Debug
+      type:
+        descriptor:
+          sql:
+            BasicBinder: TRACE
+    orm:
+      jdbc:
+        bind: WARN
