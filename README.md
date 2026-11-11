@@ -1,5 +1,7 @@
 # Estudos sobre jwt
+
 API REST desenvolvida com Spring Boot para estudo de conceitos de jwt, validações em MySQL.
+
 ## 🚀 Tecnologias
 
 - Java 27
@@ -7,20 +9,24 @@ API REST desenvolvida com Spring Boot para estudo de conceitos de jwt, validaç�
 - Lombok
 - JWT
 - Spring Validation
+
 ## 📌 Funcionalidades
 
 ### User (`/User`)
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| POST | `/users/auth/register` | Cria um novo Usuario |
-| POST | `/users/auth/login` | Loga o Usuario |
-| GET | `/users/me` |Busca informações do usuario usando um token jwt|
+
+| Método | Rota                   | Descrição                                                    |
+|--------|------------------------|--------------------------------------------------------------|
+| POST   | `/users/auth/register` | Cria um novo Usuario                                         |
+| POST   | `/users/auth/login`    | Loga o Usuario                                               |
+| GET    | `/users/me`            | Busca informações do usuario usando um token jwt             |
+| GET    | `/users/admin`         | Busca informações de todos usuario usando um token jwt admin |
 
 O projeto também conta com um `RestExceptionHandler` global para retornar respostas de erro padronizadas.
 
 ## ⚙️ Como rodar o projeto
 
 ### Pré-requisitos
+
 - Java 27+
 - Maven (ou use o `./mvnw` incluso no projeto)
 
@@ -32,7 +38,7 @@ O projeto também conta com um `RestExceptionHandler` global para retornar respo
 
 2. Crie um arquivo `.env` na raiz do projeto com suas credenciais de banco:
    ```
-   DB_URL=jjdbc:h2:mem:jwtusers
+   DB_URL=jdbc:h2:mem:jwtusers
    DB_CLASSNAME=org.h2.Driver
    DB_USERNAME=seu_usuario
    DB_PASSWORD=sua_senha

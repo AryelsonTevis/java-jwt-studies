@@ -11,11 +11,14 @@ import estudo.Jwt.jwtJava.secutity.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Log4j2
 @Service
@@ -66,5 +69,10 @@ public class UserService {
 
     public UserResponse getInfos(Users user) {
         return UserResponse.builder().name(user.getName()).email(user.getEmail()).build();
+    }
+
+    public List<UserResponse> getAllUsers(Users user) {
+        return userRepository.findAll().stream()
+                .map(users ->  UserResponse.builder().name(users.getName()).email(users.getEmail()).build()).toList();
     }
 }

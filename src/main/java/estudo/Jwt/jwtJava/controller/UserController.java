@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Log4j2
 @RestController
 @RequestMapping("users")
@@ -32,15 +34,18 @@ public class UserController {
     @PostMapping("/auth/login")
     @Operation(summary = "Login User")
     public ResponseEntity<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
-        return new ResponseEntity<>(userService.login(userLoginRequest) ,HttpStatus.OK);
+        return new ResponseEntity<>(userService.login(userLoginRequest), HttpStatus.OK);
     }
 
     @GetMapping(path = "/me")
     @Operation(summary = "Get user information from token")
     public ResponseEntity<UserResponse> getInfos(@AuthenticationPrincipal Users user) {
-        log.info(user.toString());
         return new ResponseEntity<>(userService.getInfos(user), HttpStatus.OK);
     }
 
-
+    @GetMapping(path = "/admin")
+    @Operation(summary = "Get all user information with token admin")
+    public ResponseEntity<List<UserResponse>> getAllUser(@AuthenticationPrincipal Users user) {
+        return new ResponseEntity<>(userService.getAllUsers(user), HttpStatus.OK);
+    }
 }
