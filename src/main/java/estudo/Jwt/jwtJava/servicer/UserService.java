@@ -8,6 +8,7 @@ import estudo.Jwt.jwtJava.domain.UserRole;
 import estudo.Jwt.jwtJava.domain.Users;
 import estudo.Jwt.jwtJava.repository.UserRepository;
 import estudo.Jwt.jwtJava.secutity.TokenService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,25 @@ public class UserService {
 
     public List<UserResponse> getAllUsers(Users user) {
         return userRepository.findAll().stream()
-                .map(users ->  UserResponse.builder().name(users.getName()).email(users.getEmail()).build()).toList();
+                .map(users -> UserResponse.builder().name(users.getName()).email(users.getEmail()).build()).toList();
+    }
+
+    public String saveUserAdmin(@Valid UserRegisterRequest userRegisterRequest, String password) {
+        if (!tokenService.checkPermissionToCreateUserAdmin(password))
+            throw new IllegalArgumentException("You cant create user admin");
+
+
+        Users userAdminToBeSaved = Users.builder()
+                .name(userRegisterRequest.getName())
+                .email(userRegisterRequest.getEmail())
+                .password(userRegisterRequest.getPassword())
+                .role(UserRole.ADMIN).build();
+        try {
+            userRepository.save(userAdminToBeSaved);
+        }catch (Exception e) {
+            throw new IllegalArgumentException("Error to save user admin");
+        }
+        return "User Admin registered successfully";
+
     }
 }

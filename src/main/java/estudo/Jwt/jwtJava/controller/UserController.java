@@ -48,4 +48,11 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> getAllUser(@AuthenticationPrincipal Users user) {
         return new ResponseEntity<>(userService.getAllUsers(user), HttpStatus.OK);
     }
+
+    @PostMapping(path = "/auth/register/admin")
+    @Operation(summary = "Create User Admin")
+    public ResponseEntity<HttpStatus> createUserAdmin(@Valid @RequestBody UserRegisterRequest userRegisterRequest, @RequestHeader("Permission") String password) {
+        userService.saveUserAdmin(userRegisterRequest,password);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }
