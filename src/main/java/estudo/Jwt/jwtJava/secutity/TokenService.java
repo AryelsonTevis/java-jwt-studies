@@ -17,6 +17,9 @@ public class TokenService {
     @Value("${API_SECURITY_TOKEN_SECRET}")
     private String secret;
 
+    @Value("${PERMISSION_USER_ADMIN}")
+    private String permissionUserAdmin;
+
     public String generateToken(Users user){
 
         try{
@@ -58,5 +61,10 @@ public class TokenService {
 
     private Instant genExpirationDate(){
         return Instant.now().plus(10, ChronoUnit.DAYS);
+    }
+
+    public boolean checkPermissionToCreateUserAdmin (String permission){
+
+        return permission.equals(permissionUserAdmin);
     }
 }

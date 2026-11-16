@@ -14,12 +14,13 @@ API REST desenvolvida com Spring Boot para estudo de conceitos de jwt, validaç�
 
 ### User (`/User`)
 
-| Método | Rota                   | Descrição                                                    |
-|--------|------------------------|--------------------------------------------------------------|
-| POST   | `/users/auth/register` | Cria um novo Usuario                                         |
-| POST   | `/users/auth/login`    | Loga o Usuario                                               |
-| GET    | `/users/me`            | Busca informações do usuario usando um token jwt             |
-| GET    | `/users/admin`         | Busca informações de todos usuario usando um token jwt admin |
+| Método | Rota                         | Descrição                                                    |
+|--------|------------------------------|--------------------------------------------------------------|
+| POST   | `/users/auth/register`       | Cria um novo Usuario                                         |
+| POST   | `/users/auth/login`          | Loga o Usuario                                               |
+| GET    | `/users/me`                  | Busca informações do usuario usando um token jwt             |
+| GET    | `/users/admin`               | Busca informações de todos usuario usando um token jwt admin |
+| GET    | `/users/auth/register/admin` | Cria um novo usuario admin                                   |
 
 O projeto também conta com um `RestExceptionHandler` global para retornar respostas de erro padronizadas.
 
@@ -44,6 +45,7 @@ O projeto também conta com um `RestExceptionHandler` global para retornar respo
    DB_PASSWORD=sua_senha
    DB_PLATFORM= org.hibernate.dialect.H2Dialect
    API_SECURITY_TOKEN_SECRET="sua_secret_para_o_JWT"
+   PERMISSION_USER_ADMIN=sua_senha_para_criar_Admin
    
    ```
 3. Rode a aplicação:
