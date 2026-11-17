@@ -67,7 +67,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Save return IllegalArgumentException when user email invalid")
+    @DisplayName("Save throw IllegalArgumentException when user email invalid")
     public void saveUser_ReturnIllegalArgumentException_WhenUserEmailIsInvalid() {
 
         UserRegisterRequest userToBeSaved = UserRegisterCreator.createUserRegisterRequest();
@@ -78,7 +78,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Save return IllegalArgumentException when user password is invalid")
+    @DisplayName("Save throw IllegalArgumentException when user password is invalid")
     public void saveUser_ReturnIllegalArgumentException_WhenUserPasswordIsInvalid() {
 
         UserRegisterRequest userToBeSaved = UserRegisterCreator.createUserRegisterRequest();
@@ -89,7 +89,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Save return IllegalArgumentException when user password is null")
+    @DisplayName("Save throw IllegalArgumentException when user password is null")
     public void saveUser_ReturnIllegalArgumentException_WhenUserPasswordIsNull() {
 
         UserRegisterRequest userToBeSaved = UserRegisterCreator.createUserRegisterRequest();
@@ -100,7 +100,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Save return IllegalArgumentException when user password is blank")
+    @DisplayName("Save throw IllegalArgumentException when user password is blank")
     public void saveUser_ReturnIllegalArgumentException_WhenUserPasswordIsBlank() {
 
         UserRegisterRequest userToBeSaved = UserRegisterCreator.createUserRegisterRequest();

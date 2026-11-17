@@ -40,6 +40,26 @@ public class TokenService {
         }
     }
 
+    public String generateFastExpiringToken(Users user){
+
+        try{
+
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            String token = JWT.create()
+                    .withIssuer("API SECURITY")
+                    .withSubject(user.getEmail())
+                    .withExpiresAt(genFastExpirationDate())
+                    .sign(algorithm);
+
+            return token;
+        }
+        catch (JWTCreationException exception){
+
+            throw new RuntimeException("Error while generating JWT token", exception);
+        }
+    }
+
     public String validateToken(String token){
 
         try {
@@ -55,12 +75,16 @@ public class TokenService {
         }
         catch ( JWTVerificationException exception){
 
-            return "";
+            if (exception.getMessage().matches("The token was.*")) throw new JWTVerificationException("The token is not valid");
+            throw new JWTVerificationException("The token has expired");
         }
     }
 
     private Instant genExpirationDate(){
         return Instant.now().plus(10, ChronoUnit.DAYS);
+    }
+    private Instant genFastExpirationDate(){
+        return Instant.now().plus(2, ChronoUnit.SECONDS);
     }
 
     public boolean checkPermissionToCreateUserAdmin (String permission){
