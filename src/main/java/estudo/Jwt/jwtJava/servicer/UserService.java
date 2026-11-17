@@ -20,27 +20,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class UserService {
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
 
     public String saveUser(UserRegisterRequest userCreatPost) {
+        verifyEmail(userCreatPost.getEmail());
+        verifyPassword(userCreatPost.getPassword());
 
         Users userToBeSaved = Users.builder()
-                .name(userCreatPost.getName())
-                .email(userCreatPost.getEmail())
-                .password(passwordEncoder.encode(userCreatPost.getPassword()))
+                .name(userCreatPost.getName().stripLeading())
+                .email(userCreatPost.getEmail().stripLeading())
+                .password(passwordEncoder.encode(userCreatPost.getPassword().stripLeading()))
                 .role(UserRole.USER)
                 .build();
 
@@ -55,6 +58,7 @@ public class UserService {
     }
 
     public UserLoginResponse login(UserLoginRequest userLoginPost) {
+        verifyEmail(userLoginPost.getEmail());
 
         var login = new UsernamePasswordAuthenticationToken(userLoginPost.getEmail(), userLoginPost.getPassword());
 
@@ -93,6 +97,20 @@ public class UserService {
             throw new IllegalArgumentException("Error to save user admin");
         }
         return "User Admin registered successfully";
+
+    }
+
+    private void verifyEmail(String email) {
+        if (email == null||email.equals("")) throw new IllegalArgumentException("User email cannot be null or blank");
+        email.stripLeading();
+        if (!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$", email)) throw new IllegalArgumentException("User email is invalid");
+
+    }
+
+    private void verifyPassword(String password) {
+        if (password == null || password.equals("")) throw new IllegalArgumentException("User password cannot be null or empty");
+        password.stripLeading();
+        if (!Pattern.matches("^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,}$", password)) throw new IllegalArgumentException("User password is not strong. The password must be 8 character, include one special character, and one uppercase letter");
 
     }
 }

@@ -10,4 +10,11 @@ public class UserRegisterCreator {
                 .password(UserCreator.createUserToBeSaved().getPassword())
                 .build();
     }
+    public static UserRegisterRequest createUserWithInvalidEmailRegisterRequest() {
+        return UserRegisterRequest.builder()
+                .name(UserCreator.createUserToBeSaved().getName())
+                .email("")
+                .password(UserCreator.createUserToBeSaved().getPassword())
+                .build();
+    }
 }
