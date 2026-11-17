@@ -8,7 +8,7 @@ public class UserCreator {
         return Users.builder()
                 .name("Teste")
                 .email("Teste@gmail.com")
-                .password("Azirael")
+                .password("Azirael123@")
                 .role(UserRole.USER)
                 .build();
     }
