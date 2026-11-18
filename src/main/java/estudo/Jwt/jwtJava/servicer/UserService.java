@@ -27,10 +27,10 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class UserService {
     @Autowired
-    private final AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private final TokenService tokenService;
+    private TokenService tokenService;
 
     private final PasswordEncoder passwordEncoder;
 
