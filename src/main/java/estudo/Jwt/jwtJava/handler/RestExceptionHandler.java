@@ -18,7 +18,6 @@ public class RestExceptionHandler {
                 .title("Illegal Argument Exception")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .details(iae.getMessage())
-                .developerMessage("Email already registered")
                 .timestamp(LocalDateTime.now())
                 .build(),HttpStatus.BAD_REQUEST);
     }

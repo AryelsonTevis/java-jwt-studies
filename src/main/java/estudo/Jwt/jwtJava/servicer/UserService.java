@@ -85,11 +85,13 @@ public class UserService {
         if (!tokenService.checkPermissionToCreateUserAdmin(password))
             throw new IllegalArgumentException("You cant create user admin");
 
+        verifyEmail(userRegisterRequest.getEmail());
+        verifyPassword(userRegisterRequest.getPassword());
 
         Users userAdminToBeSaved = Users.builder()
-                .name(userRegisterRequest.getName())
-                .email(userRegisterRequest.getEmail())
-                .password(userRegisterRequest.getPassword())
+                .name(userRegisterRequest.getName().stripLeading())
+                .email(userRegisterRequest.getEmail().stripLeading())
+                .password(passwordEncoder.encode(userRegisterRequest.getPassword().stripLeading()))
                 .role(UserRole.ADMIN).build();
         try {
             userRepository.save(userAdminToBeSaved);

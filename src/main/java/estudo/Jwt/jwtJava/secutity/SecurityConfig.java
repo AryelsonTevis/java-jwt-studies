@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/auth/register/admin").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/admin").hasRole("ADMIN")
                         .requestMatchers("/v3/api-docs/**",
