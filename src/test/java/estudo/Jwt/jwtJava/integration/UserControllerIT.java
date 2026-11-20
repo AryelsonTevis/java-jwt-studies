@@ -1,5 +1,6 @@
 package estudo.Jwt.jwtJava.integration;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import estudo.Jwt.jwtJava.DTO.UserLoginRequest;
 import estudo.Jwt.jwtJava.DTO.UserLoginResponse;
 import estudo.Jwt.jwtJava.DTO.UserRegisterRequest;
@@ -142,8 +143,8 @@ public class UserControllerIT {
     }
 
     @Test
-    @DisplayName("Return List of user response when get all user successful")
-    void getAllUser_ReturnsListOfUserResponse_WhenSuccessful() {
+    @DisplayName("Return List all of user response when get all user successful")
+    void getAllUser_ReturnsListAllOfUserResponse_WhenSuccessful() {
 
         testRestTemplate.postForEntity("/users/auth/register", UserRegisterCreator.createUserRegisterRequest(), String.class);
 
@@ -179,5 +180,66 @@ public class UserControllerIT {
 
         Assertions.assertThat(userToCompare.getEmail()).isEqualTo(userRegisterRequestAdmin.getEmail());
 
+    }
+
+    @Test
+    @DisplayName("Returns HttpsStatus Bad Request when save is not successful")
+    void save_ReturnsHttpsStatusBadRequest_WhenIsNotSuccessful() {
+
+        UserRegisterRequest userRegisterRequest = UserRegisterCreator.createUserRegisterRequestWithInvalidEmail();
+
+        ResponseEntity<IllegalArgumentException> responseEntity = testRestTemplate.postForEntity("/users/auth/register", userRegisterRequest, IllegalArgumentException.class);
+
+        Assertions.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    @DisplayName("Return HttpsStatus EXPECTATION_FAILED when login is not successful")
+    void login_ReturnsHttpsStatusExpectationFailed_WhenIsNotSuccessful() {
+
+        UserLoginRequest userLoginRequest = UserLoginCreator.createUserLoginRequest();
+
+        ResponseEntity<IllegalArgumentException> responseEntity = testRestTemplate.postForEntity("/users/auth/login", userLoginRequest, IllegalArgumentException.class);
+
+        Assertions.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.EXPECTATION_FAILED);
+    }
+
+    @Test
+    @DisplayName("Return HttpsStatus Forbidden when get info is not successful")
+    void getInfos_ReturnsHttpsStatusForbidden_WhenIsNotSuccessful() {
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setBearerAuth("");
+
+        ResponseEntity<String> response = testRestTemplate.exchange("/users/me", HttpMethod.GET, new HttpEntity<>(headers), String.class);
+
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    @DisplayName("Return HttpsStatus Bad Request when created is not successful")
+    void createdUserAdmin_ReturnsHttpsStatusBadRequest_WhenIsNSuccessful() {
+        UserRegisterRequest userRegisterRequestAdmin = UserRegisterCreator.createUserRegisterRequestAdmin();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Permission", "");
+
+        ResponseEntity<IllegalArgumentException> response = testRestTemplate.exchange("/users/auth/register/admin", HttpMethod.POST, new HttpEntity<>(userRegisterRequestAdmin, headers), IllegalArgumentException.class);
+
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    @DisplayName("Return error when get all user  is notsuccessful")
+    void getAllUser_ReturnsError_WhenSuccessful() {
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setBearerAuth("lkjklklasd");
+
+        ResponseEntity<String> response = testRestTemplate.exchange("/users/admin", HttpMethod.GET, new HttpEntity<>(headers), String.class);
+
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 }

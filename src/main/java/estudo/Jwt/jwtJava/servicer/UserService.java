@@ -104,14 +104,14 @@ public class UserService {
 
     private void verifyEmail(String email) {
         if (email == null||email.equals("")) throw new IllegalArgumentException("User email cannot be null or blank");
-        email.stripLeading();
+        email = email.stripLeading();
         if (!Pattern.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$", email)) throw new IllegalArgumentException("User email is invalid");
 
     }
 
     private void verifyPassword(String password) {
         if (password == null || password.equals("")) throw new IllegalArgumentException("User password cannot be null or empty");
-        password.stripLeading();
+        password = password.strip();
         if (!Pattern.matches("^(?=.*[A-Z])(?=.*[@$!%*?&#])[A-Za-z\\d@$!%*?&#]{8,}$", password)) throw new IllegalArgumentException("User password is not strong. The password must be 8 character, include one special character, and one uppercase letter");
 
     }

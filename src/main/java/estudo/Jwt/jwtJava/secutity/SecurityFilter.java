@@ -1,5 +1,6 @@
 package estudo.Jwt.jwtJava.secutity;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import estudo.Jwt.jwtJava.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,19 +32,17 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         var token = this.recoverToken(request);
 
-        if (token != null){
+        try {
 
             var subject = tokenService.validateToken(token);
 
-            if(subject.isEmpty()) throw new AuthenticationServiceException("Invalid Token");
-
             var user = userRepository.findByEmail(subject);
-
-            if (user == null) throw new AuthenticationServiceException("User not found");
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        }catch (JWTVerificationException exception){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
         filterChain.doFilter(request, response);
     }
