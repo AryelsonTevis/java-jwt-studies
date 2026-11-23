@@ -1,0 +1,29 @@
+x-database-variables: &database-variables
+  SPRING_DATASOURCE_URL: ${DB_URL_DOCKER}
+  SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+  SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+  API_SECURITY_TOKEN_SECRET: ${API_SECURITY_TOKEN_SECRET}
+  PERMISSION_USER_ADMIN: ${PERMISSION_USER_ADMIN}
+
+services:
+  db:
+    image: mysql
+    container_name: mysqljwt
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - jwt_user_data:/var/lib/mysql
+    mem_limit: 512m
+
+  jwtstudies:
+    image: demon9311/jwtstudies:0.2.0-SNAPSHOT
+    ports:
+      - "8080:8080"
+    environment:
+      <<: *database-variables
+    mem_limit: 512m
+
+volumes:
+  jwt_user_data:
