@@ -10,11 +10,19 @@ public class UserRegisterCreator {
                 .password(UserCreator.createUserToBeSaved().getPassword())
                 .build();
     }
-    public static UserRegisterRequest createUserWithInvalidEmailRegisterRequest() {
+    public static UserRegisterRequest createUserRegisterRequestWithInvalidEmail() {
         return UserRegisterRequest.builder()
                 .name(UserCreator.createUserToBeSaved().getName())
-                .email("")
+                .email("teste")
                 .password(UserCreator.createUserToBeSaved().getPassword())
+                .build();
+    }
+
+    public static UserRegisterRequest createUserRegisterRequestAdmin() {
+        return UserRegisterRequest.builder()
+                .name(UserCreator.createUserAdminToBeSaved().getName())
+                .email(UserCreator.createUserAdminToBeSaved().getEmail())
+                .password(UserCreator.createUserAdminToBeSaved().getPassword())
                 .build();
     }
 }

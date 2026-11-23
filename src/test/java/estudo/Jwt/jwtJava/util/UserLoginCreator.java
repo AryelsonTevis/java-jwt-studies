@@ -10,4 +10,10 @@ public class UserLoginCreator {
                 .password(UserCreator.createUserToBeSaved().getPassword())
                 .build();
     }
+    public static UserLoginRequest createUserAdminLoginRequest() {
+        return UserLoginRequest.builder()
+                .email(UserCreator.createUserAdminToBeSaved().getEmail())
+                .password(UserCreator.createUserAdminToBeSaved().getPassword())
+                .build();
+    }
 }
